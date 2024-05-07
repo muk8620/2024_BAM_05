@@ -33,9 +33,6 @@ public class Main {
 				
 				++lastArticleId;
 				
-//				Article article = new Article(id, title, body);
-//				articleList.add(article);
-				
 				String formatedNow = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 				
 				articleList.add(new Article(lastArticleId, formatedNow, title, body));
@@ -59,7 +56,17 @@ public class Main {
 			} else if (cmd.startsWith("article detail")) {
 				
 //				int id = Integer.parseInt(cmd.substring(15));
-				int id = Integer.parseInt(cmd.split(" ")[2]);
+				
+				int id = 0;
+				
+				try {
+					id = Integer.parseInt(cmd.split(" ")[2]);
+				} catch (NumberFormatException e) {
+					System.out.println("명령어가 올바르지 않습니다.");
+					continue;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				
 				Article foundArticle = null;
 				
@@ -79,6 +86,75 @@ public class Main {
 				System.out.println("날짜 : " + foundArticle.date);
 				System.out.println("제목 : " + foundArticle.title);
 				System.out.println("내용 : " + foundArticle.body);
+				
+			} else if (cmd.startsWith("article modify")) {
+				
+				int id = 0;
+				
+				try {
+					id = Integer.parseInt(cmd.split(" ")[2]);
+				} catch (NumberFormatException e) {
+					System.out.println("명령어가 올바르지 않습니다.");
+					continue;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				Article foundArticle = null;
+				
+				for (Article article : articleList) {
+					if (article.id == id) {
+						foundArticle = article;
+						break;
+					}
+				}
+				
+				if (foundArticle == null) {
+					System.out.println(id + "번 게시물이 존재하지 않습니다.");
+					continue;
+				}
+				
+				System.out.printf("수정 할 제목 : ");
+				String title = sc.nextLine();
+				
+				System.out.printf("수정 할 내용 : ");
+				String body = sc.nextLine();
+				
+				foundArticle.title = title;
+				foundArticle.body = body;
+				
+				System.out.println(foundArticle.id + "번 게시물이 수정되었습니다.");
+				
+			} else if (cmd.startsWith("article delete")) {
+				
+				int id = 0;
+				
+				try {
+					id = Integer.parseInt(cmd.split(" ")[2]);
+				} catch (NumberFormatException e) {
+					System.out.println("명령어가 올바르지 않습니다.");
+					continue;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				Article foundArticle = null;
+				
+				for (Article article : articleList) {
+					if (article.id == id) {
+						foundArticle = article;
+						break;
+					}
+				}
+				
+				if (foundArticle == null) {
+					System.out.println(id + "번 게시물이 존재하지 않습니다.");
+					continue;
+				}
+				
+				articleList.remove(foundArticle);
+				System.out.println(foundArticle.id + "번 게시물이 삭제되었습니다.");
+				
 				
 			} else {
 				
