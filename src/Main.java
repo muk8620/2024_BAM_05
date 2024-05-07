@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,7 +11,7 @@ public class Main {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		int id = 0;
+		int lastArticleId = 0;
 		List<Article> articleList = new ArrayList<>();
 		
 		while (true) {
@@ -29,18 +31,18 @@ public class Main {
 				System.out.printf("내용 : ");
 				String body = sc.nextLine();
 				
-				++id;
+				++lastArticleId;
 				
 //				Article article = new Article(id, title, body);
 //				articleList.add(article);
 				
-				articleList.add(new Article(id, title, body));
+				String formatedNow = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 				
-				System.out.printf("%d번 글이 생성되었습니다.\n", id);
-				continue;
-			}
-			
-			if (cmd.equals("article list")) {
+				articleList.add(new Article(lastArticleId, formatedNow, title, body));
+				
+				System.out.printf("%d번 글이 생성되었습니다.\n", lastArticleId);
+				
+			} else if (cmd.equals("article list")) {
 				
 				if (articleList.size() == 0) {
 					System.out.println("존재하는 게시글이 없습니다.");
@@ -53,15 +55,39 @@ public class Main {
 					Article article = articleList.get(i);
 					System.out.printf("%d	|	%s\n" , article.id, article.title);
 				}
-				continue;
+				
+			} else if (cmd.startsWith("article detail")) {
+				
+//				int id = Integer.parseInt(cmd.substring(15));
+				int id = Integer.parseInt(cmd.split(" ")[2]);
+				
+				Article foundArticle = null;
+				
+				for (Article article : articleList) {
+					if (article.id == id) {
+						foundArticle = article;
+						break;
+					}
+				}
+				
+				if (foundArticle == null) {
+					System.out.println(id + "번 게시물이 존재하지 않습니다.");
+					continue;
+				}
+				
+				System.out.println("번호 : " + foundArticle.id);
+				System.out.println("날짜 : " + foundArticle.date);
+				System.out.println("제목 : " + foundArticle.title);
+				System.out.println("내용 : " + foundArticle.body);
+				
+			} else {
+				
+				System.out.println("존재하지 않는 명령어 입니다.");
 			}
 			
 			if (cmd.equals("exit")) {
 				break;
 			}
-			
-			System.out.println("존재하지 않는 명령어 입니다.");
-			
 		} 
 		
 		sc.close();
@@ -72,11 +98,13 @@ public class Main {
 
 class Article {
 	int id;
+	String date;
 	String title;
 	String body;
 	
-	Article(int id, String title, String body) {
+	Article(int id, String date, String title, String body) {
 		this.id = id;
+		this.date = date;
 		this.title = title;
 		this.body = body;
 	}
