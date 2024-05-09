@@ -1,6 +1,11 @@
+package com.koreaIT.BAM;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import com.koreaIT.BAM.dto.Article;
+import com.koreaIT.BAM.util.Util;
 
 public class Main {
 	
@@ -37,9 +42,7 @@ public class Main {
 				System.out.printf("내용 : ");
 				String body = sc.nextLine();
 				
-				++lastArticleId;
-				
-				articleList.add(new Article(0, lastArticleId, Util.getDateStr(), title, body));
+				articleList.add(new Article(0, ++lastArticleId, Util.getDateStr(), title, body));
 				
 				System.out.printf("%d번 글이 생성되었습니다.\n", lastArticleId);
 				
@@ -54,7 +57,7 @@ public class Main {
 				
 				for (int i = articleList.size() - 1; i >= 0; i--) {
 					Article article = articleList.get(i);
-					System.out.printf("%d	|	%d	|	%s	|	%s\n" , article.viewCnt, article.id, article.title, article.regDate);
+					System.out.printf("%d	|	%d	|	%s	|	%s\n" , article.getViewCnt(), article.getId(), article.getTitle(), article.getRegDate());
 				}
 				
 			} else if (cmd.startsWith("article detail")) {
@@ -75,7 +78,7 @@ public class Main {
 				Article foundArticle = null;
 				
 				for (Article article : articleList) {
-					if (article.id == id) {
+					if (article.getId() == id) {
 						foundArticle = article;
 						break;
 					}
@@ -87,11 +90,11 @@ public class Main {
 				}
 				
 				foundArticle.increaseViewCnt();
-				System.out.println("조회수 : " + foundArticle.viewCnt);
-				System.out.println("번호 : " + foundArticle.id);
-				System.out.println("날짜 : " + foundArticle.regDate);
-				System.out.println("제목 : " + foundArticle.title);
-				System.out.println("내용 : " + foundArticle.body);
+				System.out.println("조회수 : " + foundArticle.getViewCnt());
+				System.out.println("번호 : " + foundArticle.getId());
+				System.out.println("날짜 : " + foundArticle.getRegDate());
+				System.out.println("제목 : " + foundArticle.getTitle());
+				System.out.println("내용 : " + foundArticle.getBody());
 				
 			} else if (cmd.startsWith("article modify")) {
 				
@@ -109,7 +112,7 @@ public class Main {
 				Article foundArticle = null;
 				
 				for (Article article : articleList) {
-					if (article.id == id) {
+					if (article.getId() == id) {
 						foundArticle = article;
 						break;
 					}
@@ -126,10 +129,10 @@ public class Main {
 				System.out.printf("수정 할 내용 : ");
 				String body = sc.nextLine();
 				
-				foundArticle.title = title;
-				foundArticle.body = body;
+				foundArticle.setTitle(title);
+				foundArticle.setBody(body);
 				
-				System.out.println(foundArticle.id + "번 게시물이 수정되었습니다.");
+				System.out.println(foundArticle.getId() + "번 게시물이 수정되었습니다.");
 				
 			} else if (cmd.startsWith("article delete")) {
 				
@@ -147,7 +150,7 @@ public class Main {
 				Article foundArticle = null;
 				
 				for (Article article : articleList) {
-					if (article.id == id) {
+					if (article.getId() == id) {
 						foundArticle = article;
 						break;
 					}
@@ -159,7 +162,7 @@ public class Main {
 				}
 				
 				articleList.remove(foundArticle);
-				System.out.println(foundArticle.id + "번 게시물이 삭제되었습니다.");
+				System.out.println(foundArticle.getId() + "번 게시물이 삭제되었습니다.");
 				
 				
 			} else {
@@ -188,27 +191,7 @@ public class Main {
 	}
 }
 
-class Article {
-	
-	int viewCnt;
-	int id;
-	String regDate;
-	String title;
-	String body;
-	
-	Article(int viewCnt, int id, String regDate, String title, String body) {
-		this.viewCnt = viewCnt;
-		this.id = id;
-		this.regDate = regDate;
-		this.title = title;
-		this.body = body;
-	}
-	
-	void increaseViewCnt() {
-		this.viewCnt++;
-	}
-	
-}
+
 
 
 
