@@ -48,42 +48,38 @@ public class App {
 				
 			} else if (cmd.startsWith("article list")) {
 				
-				String cmdBits = null;
-				
-				try {
-					cmdBits = cmd.split(" ")[2];
-				} catch (Exception e) {
-					
-					if (articleList.size() == 0) {
-						System.out.println("존재하는 게시글이 없습니다.");
-						continue;
-					}
-					
-					System.out.println("조회수	|	번호	|	제목	|	날짜");
-					
-					for (int i = articleList.size() - 1; i >= 0; i--) {
-						Article article = articleList.get(i);
-						System.out.printf("%d	|	%d	|	%s	|	%s\n" , article.getViewCnt(), article.getId(), article.getTitle(), article.getRegDate());
-					}
+				if (articleList.size() == 0) {
+					System.out.println("존재하는 게시물이 없습니다.");
 					continue;
 				}
 				
-				int foundArticles = 0;
+				List<Article> printArticle = articleList;
 				
-				for (int i = articleList.size() - 1; i >= 0; i--) {
-					Article article = articleList.get(i);
-					if (article.getTitle().indexOf(cmdBits) != -1) {
-						++foundArticles;
-						System.out.printf("%d	|	%d	|	%s	|	%s\n" , article.getViewCnt(), article.getId(), article.getTitle(), article.getRegDate());
+				String searchKeyword = cmd.substring("article list".length()).trim();
+				
+				if (searchKeyword.length() > 0) {
+					printArticle = new ArrayList<>();
+					
+					for(Article article : articleList) {
+						if(article.getTitle().contains(searchKeyword)) {
+							printArticle.add(article);
+						}
 					}
 				}
 				
-				if (foundArticles == 0) {
-					System.out.println("해당하는 게시물이 없습니다.");
+				if (printArticle.size() == 0) {
+					System.out.println("검색결과가 없습니다.");
+					continue;
+				}
+					
+				System.out.println("조회수	|	번호	|	제목	|	날짜");
+				
+				for (int i = printArticle.size() - 1; i >= 0; i--) {
+					Article article = printArticle.get(i);
+					System.out.printf("%d	|	%d	|	%s	|	%s\n" , article.getViewCnt(), article.getId(), article.getTitle(), article.getRegDate());
 				}
 				
-				
-			} else if (cmd.startsWith("article detail")) {
+			} else if (cmd.startsWith("article detail ")) {
 				
 				int id = getCmdNum(cmd);
 				
@@ -106,7 +102,7 @@ public class App {
 				System.out.println("제목 : " + foundArticle.getTitle());
 				System.out.println("내용 : " + foundArticle.getBody());
 				
-			} else if (cmd.startsWith("article modify")) {
+			} else if (cmd.startsWith("article modify ")) {
 				
 				int id = 0;
 				
@@ -144,7 +140,7 @@ public class App {
 				
 				System.out.println(foundArticle.getId() + "번 게시물이 수정되었습니다.");
 				
-			} else if (cmd.startsWith("article delete")) {
+			} else if (cmd.startsWith("article delete ")) {
 				
 				int id = 0;
 				
