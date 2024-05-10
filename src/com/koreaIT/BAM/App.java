@@ -28,7 +28,8 @@ public class App {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		makeTestData();
+		makeTestArticleData();
+		makeTestMemberData();
 		
 		while (true) {
 			
@@ -118,7 +119,7 @@ public class App {
 					System.out.println("존재하는 게시물이 없습니다.");
 					continue;
 				}
-				
+				 
 				List<Article> printArticle = articleList;
 				
 				String searchKeyword = cmd.substring("article list".length()).trim();
@@ -170,16 +171,7 @@ public class App {
 				
 			} else if (cmd.startsWith("article modify ")) {
 				
-				int id = 0;
-				
-				try {
-					id = Integer.parseInt(cmd.split(" ")[2]);
-				} catch (NumberFormatException e) {
-					System.out.println("명령어가 올바르지 않습니다.");
-					continue;
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				int id = getCmdNum(cmd);
 				
 				Article foundArticle = null;
 				
@@ -208,16 +200,7 @@ public class App {
 				
 			} else if (cmd.startsWith("article delete ")) {
 				
-				int id = 0;
-				
-				try {
-					id = Integer.parseInt(cmd.split(" ")[2]);
-				} catch (NumberFormatException e) {
-					System.out.println("명령어가 올바르지 않습니다.");
-					continue;
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				int id = getCmdNum(cmd);
 				
 				Article foundArticle = null;
 				
@@ -283,13 +266,22 @@ public class App {
 		}
 	}
 
-	private void makeTestData() {
+	private void makeTestArticleData() {
 		
 		for (int i = 1; i <= 5; i++) {
 			articleList.add(new Article(i*10, ++lastArticleId, Util.getDateStr(), "제목" + i, "내용" + i));
 		}
 		
-		System.out.println("테스트 데이터를 5개 생성했습니다.");
+		System.out.println("테스트 게시글 데이터를 5개 생성했습니다.");
+		
+	}
+	
+	private void makeTestMemberData() {
+		for (int i = 1; i <= 3; i++) {
+			memberList.add(new Member(++lastMemberId, Util.getDateStr(), "user" + i, "user" + i, "유저" + i));
+		}
+		
+		System.out.println("테스트 회원 데이터를 3개 생성했습니다.");
 		
 	}
 }
