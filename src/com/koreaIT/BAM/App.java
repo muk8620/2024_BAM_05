@@ -5,16 +5,21 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.koreaIT.BAM.dto.Article;
+import com.koreaIT.BAM.dto.Member;
 import com.koreaIT.BAM.util.Util;
 
 public class App {
 	
 	List<Article> articleList;
+	List<Member> memberList;
 	int lastArticleId;
+	int lastMemberId;
 	
 	App() {
 		articleList = new ArrayList<>();
+		memberList = new ArrayList<>();
 		lastArticleId = 0;
+		lastMemberId = 0;
 	}
 	
 	public void run() {
@@ -35,7 +40,68 @@ public class App {
 				continue;
 			}
 			
-			if (cmd.equals("article write")) {
+			if (cmd.equals("member join")) {
+				
+				String loginId = null;
+				String loginPw = null;
+				String name = null;
+				
+				while(true) {
+					System.out.printf("아이디 : ");
+					loginId = sc.nextLine().trim();
+					
+					if (loginId.isEmpty()) {
+						System.out.println("아이디는 필수 입력 정보입니다.");
+						continue;
+					}
+					
+					if (loginIdDupChk(loginId)) {
+						System.out.printf("[%s] 은(는)이미 사용중인 아이디 입니다.\n", loginId);
+						continue;
+					}
+					
+					System.out.printf("[%s] 은(는) 사용가능한 아이디 입니다.\n", loginId);
+					
+					break;
+				}
+				
+				while(true) {
+					
+					System.out.printf("비밀번호 : ");
+					loginPw = sc.nextLine().trim();
+					
+					if (loginPw.isEmpty()) {
+						System.out.println("비밀번호를 입력해주세요.");
+						continue;
+					}
+					
+					System.out.printf("비밀번호 확인: ");
+					String loginPwChk = sc.nextLine().trim();
+					
+					if(!loginPw.equals(loginPwChk)) {
+						System.out.println("비밀번호를 다시 입력해주세요.");
+						continue;
+					}
+					
+					break;
+				}
+				
+				while (true) {
+					System.out.printf("이름 : ");
+					name = sc.nextLine().trim();
+					
+					if (name.isEmpty()) {
+						System.out.println("이름은 필수 입력 정보입니다.");
+						continue;
+					}
+					
+					break;
+				}
+				
+				memberList.add(new Member(++lastMemberId, Util.getDateStr(), loginId, loginPw, name));
+				System.out.printf("%s 회원님의 가입이 완료되었습니다.\n", name);
+				
+			} else if (cmd.equals("article write")) {
 				System.out.printf("제목 : ");
 				String title = sc.nextLine();
 				
@@ -170,15 +236,15 @@ public class App {
 				articleList.remove(foundArticle);
 				System.out.println(foundArticle.getId() + "번 게시물이 삭제되었습니다.");
 				
-				
 			} else {
-				
 				System.out.println("존재하지 않는 명령어 입니다.");
+				continue;
 			}
 			
 			if (cmd.equals("exit")) {
 				break;
 			}
+				
 		} 
 		
 		sc.close();
@@ -187,6 +253,15 @@ public class App {
 
 	}
 	
+	private boolean loginIdDupChk(String loginId) {
+		for (Member member : memberList) {
+			if (member.getLoginId().equals(loginId)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private Article getArticleById(int id) {
 		
 		for (Article article : articleList) {
