@@ -7,9 +7,8 @@ import java.util.Scanner;
 import com.koreaIT.BAM.dto.Article;
 import com.koreaIT.BAM.util.Util;
 
-public class ArticleController {
+public class ArticleController extends Controller{
 	
-	private Scanner sc;
 	private List<Article> articleList;
 	private int lastArticleId;
 	
@@ -19,8 +18,32 @@ public class ArticleController {
 		this.lastArticleId = 0;
 	}
 	
-	public void doWrite() {
+	@Override
+	public void doAction(String cmd, String methodName) {
+		this.cmd = cmd;
 		
+		switch(methodName) {
+		case "write":
+			doWrite();
+			break;
+		case "list":
+			showList();
+			break;
+		case "detail":
+			showDetail();
+			break;
+		case "modify":
+			doModify();
+			break;
+		case "delete":
+			doDelete();
+			break;
+		default:
+			System.out.println("존재하지 않는 명령어 입니다.");
+		}
+	}
+	
+	public void doWrite() {
 		System.out.printf("제목 : ");
 		String title = sc.nextLine();
 		
@@ -30,9 +53,10 @@ public class ArticleController {
 		articleList.add(new Article(0, ++lastArticleId, Util.getDateStr(), title, body));
 		
 		System.out.printf("%d번 글이 생성되었습니다.\n", lastArticleId);
+		
 	}
 
-	public void showList(String cmd) {
+	public void showList() {
 		if (articleList.size() == 0) {
 			System.out.println("존재하는 게시물이 없습니다.");
 			return;
@@ -65,7 +89,7 @@ public class ArticleController {
 		}
 	}
 	
-	public void showDetail(String cmd) {
+	public void showDetail() {
 		int id = getCmdNum(cmd);
 		
 		if (id == 0) {
@@ -88,7 +112,7 @@ public class ArticleController {
 		System.out.println("내용 : " + foundArticle.getBody());
 	}
 	
-	public void doModify(String cmd) {
+	public void doModify() {
 		int id = getCmdNum(cmd);
 		
 		Article foundArticle = null;
@@ -117,8 +141,7 @@ public class ArticleController {
 		System.out.println(foundArticle.getId() + "번 게시물이 수정되었습니다.");
 	}
 	
-	public void doDelete(String cmd) {
-		
+	public void doDelete() {
 		int id = getCmdNum(cmd);
 		
 		Article foundArticle = null;
@@ -141,7 +164,6 @@ public class ArticleController {
 
 	
 	private Article getArticleById(int id) {
-		
 		for (Article article : articleList) {
 			if (article.getId() == id) {
 				return article;
@@ -152,7 +174,6 @@ public class ArticleController {
 	}
 	
 	private int getCmdNum(String cmd) {
-		
 		try {
 			int id = Integer.parseInt(cmd.split(" ")[2]);
 			return id;
@@ -161,8 +182,8 @@ public class ArticleController {
 		}
 	}
 	
-	public void makeTestArticleData() {
-		
+	@Override
+	public void makeTestData() {
 		for (int i = 1; i <= 5; i++) {
 			articleList.add(new Article(i*10, ++lastArticleId, Util.getDateStr(), "제목" + i, "내용" + i));
 		}
