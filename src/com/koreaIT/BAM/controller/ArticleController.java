@@ -174,10 +174,18 @@ public class ArticleController extends Controller{
 	}
 	
 	private int getCmdNum(String cmd) {
+		String[] cmdBits = cmd.split(" ");
+		
+		if (cmdBits.length > 3) {
+			return 0;
+		}
+		
 		try {
-			int id = Integer.parseInt(cmd.split(" ")[2]);
+			int id = Integer.parseInt(cmdBits[2]);
 			return id;
 		} catch (NumberFormatException e) {
+			return 0;
+		} catch (ArrayIndexOutOfBoundsException e) {
 			return 0;
 		}
 	}
@@ -189,7 +197,6 @@ public class ArticleController extends Controller{
 		}
 		
 		System.out.println("테스트 게시글 데이터를 5개 생성했습니다.");
-		
 	}
 	
 }

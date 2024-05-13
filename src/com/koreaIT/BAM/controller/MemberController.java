@@ -11,19 +11,26 @@ public class MemberController extends Controller{
 	
 	private List<Member> memberList;
 	private int lastMemberId;
+	private Member loginedMember;
 	
 	public MemberController(Scanner sc) {
 		this.sc = sc;
 		this.memberList = new ArrayList<>();
 		this.lastMemberId = 0;
+		this.loginedMember = null;
 	}
 	
 	@Override
 	public void doAction(String cmd, String methodName) {
-		
 		switch(methodName) {
 		case "join":
 			doJoin();
+			break;
+		case "login":
+			doLogin();
+			break;
+		case "logout":
+			doLogout();
 			break;
 		default:
 			System.out.println("존재하지 않는 명령어 입니다.");
@@ -55,7 +62,6 @@ public class MemberController extends Controller{
 		}
 		
 		while(true) {
-			
 			System.out.printf("비밀번호 : ");
 			loginPw = sc.nextLine().trim();
 			
@@ -91,14 +97,72 @@ public class MemberController extends Controller{
 		System.out.printf("%s 회원님의 가입이 완료되었습니다.\n", name);
 	}
 	
-	private boolean loginIdDupChk(String loginId) {
+	public void doLogin() {
+		if (loginedMember != null) {
+			System.out.println("이미 로그인 되어있습니다.");
+		}
+		
+		while(true) {
+			System.out.printf("아이디 : ");
+			String loginId = sc.nextLine().trim();
+			if (loginId.isEmpty()) {
+				System.out.println("아이디를 입력해주세요.");
+				continue;
+			}
+			
+			System.out.printf("비밀번호 : ");
+			String loginPw = sc.nextLine().trim();
+			if (loginPw.isEmpty()) {
+				System.out.println("비밀번호를 입력해주세요.");
+				continue;
+			}
+			
+			Member foundMember = getMemberByLoginId(loginId);
+			
+			if (foundMember == null) {
+				System.out.printf("[%s]은(는) 존재하지 않는 아이디 입니다.\n", loginId);
+				continue;
+			}
+			
+			if (!foundMember.getLoginPw().equals(loginPw)) {
+				System.out.println("비밀번호를 확인해주세요.");
+				continue;
+			}
+			
+			loginedMember = foundMember;
+			System.out.printf("%s 회원님 로그인 성공!.\n", loginedMember.getName());
+			break;
+		}
+		
+	}
+	
+	public void doLogout() {
+		if (loginedMember == null) {
+			System.out.println("로그인 되지 않았습니다.");
+		}
+		
+		System.out.printf("%s 회원님 로그아웃 성공!.\n", loginedMember.getName());
+		loginedMember = null;
+	}
+	
+	private Member getMemberByLoginId(String loginId) {
 		for (Member member : memberList) {
 			if (member.getLoginId().equals(loginId)) {
-				return true;
+				return member;
 			}
 		}
-		return false;
+		return null;
 	}
+	
+	private boolean loginIdDupChk(String loginId) {
+		Member member = getMemberByLoginId(loginId);
+		
+		if (member == null) {
+			return false;
+		}
+		return true;
+	}
+	
 	
 	@Override
 	public void makeTestData() {
