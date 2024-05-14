@@ -1,9 +1,9 @@
 package com.koreaIT.BAM.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.koreaIT.BAM.container.Container;
 import com.koreaIT.BAM.dto.Member;
 import com.koreaIT.BAM.util.Util;
 
@@ -14,7 +14,7 @@ public class MemberController extends Controller{
 	
 	public MemberController(Scanner sc) {
 		this.sc = sc;
-		this.memberList = new ArrayList<>();
+		this.memberList = Container.memberList;
 		this.lastMemberId = 0;
 		loginedMember = null;
 	}
@@ -149,10 +149,6 @@ public class MemberController extends Controller{
 		
 		System.out.printf("%s 회원님 로그아웃 성공!.\n", loginedMember.getName());
 		loginedMember = null;
-	}
-	
-	private boolean isLogined() {
-		return loginedMember != null;
 	}
 	
 	private Member getMemberByLoginId(String loginId) {

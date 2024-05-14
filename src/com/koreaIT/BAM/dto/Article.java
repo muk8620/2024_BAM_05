@@ -59,12 +59,12 @@ public class Article {
 
 	
 	public Article(int id, String regDate, String title, String body, int memberId, int viewCnt) {
-		this.viewCnt = viewCnt;
 		this.id = id;
 		this.regDate = regDate;
 		this.title = title;
 		this.body = body;
 		this.memberId = memberId;
+		this.viewCnt = viewCnt;
 	}
 	
 	public void increaseViewCnt() {
