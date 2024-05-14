@@ -11,12 +11,12 @@ public class MemberController extends Controller{
 	
 	private List<Member> memberList;
 	private int lastMemberId;
-	public Member loginedMember;
 	
 	public MemberController(Scanner sc) {
 		this.sc = sc;
 		this.memberList = new ArrayList<>();
 		this.lastMemberId = 0;
+		loginedMember = null;
 	}
 	
 	@Override
@@ -152,7 +152,7 @@ public class MemberController extends Controller{
 	}
 	
 	private boolean isLogined() {
-		return this.loginedMember != null;
+		return loginedMember != null;
 	}
 	
 	private Member getMemberByLoginId(String loginId) {

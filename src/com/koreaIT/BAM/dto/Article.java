@@ -2,21 +2,13 @@ package com.koreaIT.BAM.dto;
 
 public class Article {
 	
-	private int viewCnt;
 	private int id;
 	private String regDate;
 	private String title;
 	private String body;
-	public String memberLoginId;
+	private int memberId;
+	private int viewCnt;
 	
-	public int getViewCnt() {
-		return viewCnt;
-	}
-
-	public void setViewCnt(int viewCnt) {
-		this.viewCnt = viewCnt;
-	}
-
 	public int getId() {
 		return id;
 	}
@@ -48,19 +40,35 @@ public class Article {
 	public void setBody(String body) {
 		this.body = body;
 	}
+	
+	public int getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(int memberId) {
+		this.memberId = memberId;
+	}
+	
+	public int getViewCnt() {
+		return viewCnt;
+	}
+
+	public void setViewCnt(int viewCnt) {
+		this.viewCnt = viewCnt;
+	}
 
 	
-	public Article(int viewCnt, int id, String regDate, String title, String body, String memberLoginId) {
+	public Article(int id, String regDate, String title, String body, int memberId, int viewCnt) {
 		this.viewCnt = viewCnt;
 		this.id = id;
 		this.regDate = regDate;
 		this.title = title;
 		this.body = body;
-		this.memberLoginId = memberLoginId;
+		this.memberId = memberId;
 	}
 	
 	public void increaseViewCnt() {
 		this.viewCnt++;
 	}
-	
+
 }

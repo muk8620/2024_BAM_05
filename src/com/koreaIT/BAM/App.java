@@ -9,9 +9,6 @@ import com.koreaIT.BAM.dto.Member;
 
 public class App {
 	
-	App() {
-	}
-	
 	public void run() {
 			
 		System.out.println("== 프로그램 시작 ==");
@@ -59,18 +56,6 @@ public class App {
 			}
 			
 			controller.doAction(cmd, methodName);
-			articleController.loginedMember = memberController.loginedMember;
-			
-			try {
-				System.out.println(controller.loginedMember.getLoginId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				System.out.println(memberController.loginedMember.getLoginId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 			
 		}
 		

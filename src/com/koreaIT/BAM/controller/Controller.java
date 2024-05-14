@@ -8,7 +8,7 @@ public abstract class Controller {
 	
 	public Scanner sc;
 	public String cmd;
-	public Member loginedMember;
+	public static Member loginedMember;
 	
 	public abstract void doAction(String cmd, String methodName);
 	public abstract void makeTestData();
