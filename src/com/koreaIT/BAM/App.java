@@ -2,6 +2,7 @@ package com.koreaIT.BAM;
 
 import java.util.Scanner;
 
+import com.koreaIT.BAM.container.Container;
 import com.koreaIT.BAM.controller.ArticleController;
 import com.koreaIT.BAM.controller.Controller;
 import com.koreaIT.BAM.controller.MemberController;
@@ -43,6 +44,26 @@ public class App {
 			
 			String controllerName = cmdBits[0];
 			String methodName = cmdBits[1];
+			
+			String actionName = controllerName + "/" + methodName;
+			
+			switch(actionName) {
+			case "article/write":
+			case "article/modify":
+			case "article/delete":
+			case "member/logout":
+				if (!Controller.isLogined()) {
+					System.out.println("로그인이 필요합니다.");
+					continue;
+				}
+				break;
+			case "member/join":
+			case "member/login":
+				if (Controller.isLogined()) {
+					System.out.println("로그인 되어 있습니다.");
+					continue;
+				}
+			}
 			
 			Controller controller = null;
 			
