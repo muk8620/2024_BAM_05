@@ -7,6 +7,7 @@ public class Article {
 	private String regDate;
 	private String title;
 	private String body;
+	public String memberLoginId;
 	
 	public int getViewCnt() {
 		return viewCnt;
@@ -49,12 +50,13 @@ public class Article {
 	}
 
 	
-	public Article(int viewCnt, int id, String regDate, String title, String body) {
+	public Article(int viewCnt, int id, String regDate, String title, String body, String memberLoginId) {
 		this.viewCnt = viewCnt;
 		this.id = id;
 		this.regDate = regDate;
 		this.title = title;
 		this.body = body;
+		this.memberLoginId = memberLoginId;
 	}
 	
 	public void increaseViewCnt() {

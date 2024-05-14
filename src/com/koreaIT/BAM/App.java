@@ -5,6 +5,7 @@ import java.util.Scanner;
 import com.koreaIT.BAM.controller.ArticleController;
 import com.koreaIT.BAM.controller.Controller;
 import com.koreaIT.BAM.controller.MemberController;
+import com.koreaIT.BAM.dto.Member;
 
 public class App {
 	
@@ -58,6 +59,19 @@ public class App {
 			}
 			
 			controller.doAction(cmd, methodName);
+			articleController.loginedMember = memberController.loginedMember;
+			
+			try {
+				System.out.println(controller.loginedMember.getLoginId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				System.out.println(memberController.loginedMember.getLoginId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 		
 		sc.close();

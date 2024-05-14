@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.koreaIT.BAM.dto.Article;
+import com.koreaIT.BAM.dto.Member;
 import com.koreaIT.BAM.util.Util;
 
 public class ArticleController extends Controller{
@@ -44,13 +45,19 @@ public class ArticleController extends Controller{
 	}
 	
 	public void doWrite() {
+		
+		if (this.loginedMember == null) {
+			System.out.println("로그아웃 상태 입니다.");
+			return;
+		}
+		
 		System.out.printf("제목 : ");
 		String title = sc.nextLine();
 		
 		System.out.printf("내용 : ");
 		String body = sc.nextLine();
 		
-		articleList.add(new Article(0, ++lastArticleId, Util.getDateStr(), title, body));
+		articleList.add(new Article(0, ++lastArticleId, Util.getDateStr(), title, body, loginedMember.getLoginId()));
 		
 		System.out.printf("%d번 글이 생성되었습니다.\n", lastArticleId);
 		
@@ -81,11 +88,11 @@ public class ArticleController extends Controller{
 			return;
 		}
 			
-		System.out.println("조회수	|	번호	|	제목	|	날짜");
+		System.out.println("조회수	|	번호	|	제목	|		날짜		|	작성자");
 		
 		for (int i = printArticle.size() - 1; i >= 0; i--) {
 			Article article = printArticle.get(i);
-			System.out.printf("%d	|	%d	|	%s	|	%s\n" , article.getViewCnt(), article.getId(), article.getTitle(), article.getRegDate());
+			System.out.printf("%d	|	%d	|	%s	|	%s	|	%s\n" , article.getViewCnt(), article.getId(), article.getTitle(), article.getRegDate(), article.memberLoginId);
 		}
 	}
 	
@@ -113,6 +120,7 @@ public class ArticleController extends Controller{
 	}
 	
 	public void doModify() {
+		
 		int id = getCmdNum(cmd);
 		
 		Article foundArticle = null;
@@ -126,6 +134,11 @@ public class ArticleController extends Controller{
 		
 		if (foundArticle == null) {
 			System.out.println(id + "번 게시물이 존재하지 않습니다.");
+			return;
+		}
+		
+		if (this.loginedMember.getLoginId() == foundArticle.memberLoginId) {
+			System.out.println("권한이 없습니다.");
 			return;
 		}
 		
@@ -155,6 +168,11 @@ public class ArticleController extends Controller{
 		
 		if (foundArticle == null) {
 			System.out.println(id + "번 게시물이 존재하지 않습니다.");
+			return;
+		}
+		
+		if (this.loginedMember.getLoginId() == foundArticle.memberLoginId) {
+			System.out.println("권한이 없습니다.");
 			return;
 		}
 		
@@ -193,7 +211,7 @@ public class ArticleController extends Controller{
 	@Override
 	public void makeTestData() {
 		for (int i = 1; i <= 5; i++) {
-			articleList.add(new Article(i*10, ++lastArticleId, Util.getDateStr(), "제목" + i, "내용" + i));
+			articleList.add(new Article(i*10, ++lastArticleId, Util.getDateStr(), "제목" + i, "내용" + i, "user1"));
 		}
 		
 		System.out.println("테스트 게시글 데이터를 5개 생성했습니다.");
