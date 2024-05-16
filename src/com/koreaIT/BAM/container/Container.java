@@ -8,11 +8,11 @@ import com.koreaIT.BAM.dto.Member;
 
 public class Container {
 
-	public static List<Member> memberList;
-	public static List<Article> articleList;
+	public static List<Member> members;
+	public static List<Article> articles;
 	
 	static {
-		memberList = new ArrayList<>();
-		articleList = new ArrayList<>();
+		members = new ArrayList<>();
+		articles = new ArrayList<>();
 	}
 }
